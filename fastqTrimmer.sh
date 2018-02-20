@@ -74,10 +74,6 @@ echo "$Usage"
 fi
 USER_SPEC_PATH="$1"
 
-echo "INFO      | $(date) |          Setting user-specified path to: "
-echo "$USER_SPEC_PATH "	
-
-
 echo "
 ##########################################################################################
 #                         fastqTrimmer.sh v0.1.0, February 2018                          #
@@ -108,6 +104,7 @@ fi
 	cd $MY_PATH
 
 
+echo "INFO      | $(date) | STEP #2: TRIMMING READS. "
 ## CASE 1 and 2 - with input name only, or with both input and output specified, respectively.
 ## Do this with a big if-elif-fi statement, while reading user input to check and doing a 
 ## conditional subroutine.
@@ -133,6 +130,7 @@ if [[ "$MY_FILENAME" != "NULL" ]] && [[ "$MY_OUTPUT" = "NULL" ]]; then
 		echo "WARNING!  | $(date) |                          ILLEGAL OPTION. Quitting... "
 		exit 1
 	elif [[ "$TRIM_REPLACE_SWITCH" = 1 ]]; then
+		echo "INFO      | $(date) |          Trimming reads in the following file: '$MY_FILENAME'. "
 		TRUE_TRIM_POSITION="$(calc $MY_TRIM_LENGTH + $MY_STARTING_BASE - 1)"
 		MYBASENAME="$(basename $MY_FILENAME '.fastq')"
 		cut -c "$MY_STARTING_BASE"-"$TRUE_TRIM_POSITION" "$MY_FILENAME" > ./"$MYBASENAME".fastq.tmp
@@ -141,6 +139,7 @@ if [[ "$MY_FILENAME" != "NULL" ]] && [[ "$MY_OUTPUT" = "NULL" ]]; then
 	fi
 #
 elif [[ "$MY_FILENAME" != "NULL" ]] && [[ "$MY_OUTPUT" != "NULL" ]]; then
+		echo "INFO      | $(date) |          Trimming reads in file '$MY_FILENAME', and renaming with basename '$MY_OUTPUT'. "
 		TRUE_TRIM_POSITION="$(calc $MY_TRIM_LENGTH + $MY_STARTING_BASE - 1)"
 		cut -c "$MY_STARTING_BASE"-"$TRUE_TRIM_POSITION" "$MY_FILENAME" > ./"$MY_OUTPUT".fastq
 fi
@@ -163,6 +162,8 @@ fi
 ## fi
 
 if [[ "$MY_FILENAME" = "NULL" ]] && [[ "$MY_OUTPUT" = "NULL" ]]; then
+echo "INFO      | $(date) |          Trimming reads in all .fastq files in current directory. Trimmed files will be moved to "
+echo "INFO      | $(date) |          ./trimmed_fastq/, and original fastq files will be moved to ./orig_fastq/.  "
 (
 	for i in ./*.fastq; do
 		echo "$i"
