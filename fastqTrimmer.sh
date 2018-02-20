@@ -107,7 +107,12 @@ fi
 ##--working dir):
 	cd $MY_PATH
 
-## Pseudocode:
+
+## CASE 1 and 2 - with input name only, or with both input and output specified, respectively.
+## Do this with a big if-elif-fi statement, while reading user input to check and doing a 
+## conditional subroutine.
+
+## PSEUDO CODE:
 ##
 ## if only i is specified; then
 ##   warning will trim file in place
@@ -118,19 +123,6 @@ fi
 ##   cut -c 1-trimLength ./inputFile.fastq > ./outputFile.fastq
 ## fi
 
-if i = NULL; then
-  (
-    for i in ./*.fastq; do
-      MYBASENAME="$()" 
-      cut -c 1-trimLength ./Strauss_GBS.fastq > ./Strauss_GBS_trim.fastq
-    done
-  )
-fi
-
-
-## CASE 1 and 2 - with input name only, or with both input and output specified, respectively.
-## Do this with a big if-elif-fi statement, while reading user input to check and doing a 
-## conditional subroutine.
 if [[ "$MY_FILENAME" != "NULL" ]] && [[ "$MY_OUTPUT" = "NULL" ]]; then
 	echo "WARNING!  | $(date) |          fastqTrimmer will trim the input file in place and replace the old file with the trimmed file. "
 	echo ""
@@ -154,10 +146,22 @@ elif [[ "$MY_FILENAME" != "NULL" ]] && [[ "$MY_OUTPUT" != "NULL" ]]; then
 fi
 
 
+
 ## CASE 3 - perhaps the normal case. Input file and output are left at their NULL defaults
 ## (not specified) and so we assume a working dir with multiple .fastq files and we loop through
 ## the fastqs, trim them according to user specifications, and then output '"$MYBASENAME"_trim.fastq'
 ## style output file names.
+
+## PSEUDO CODE:
+## if i = NULL; then
+##   (
+##     for i in ./*.fastq; do
+##       MYBASENAME="$()" 
+##       cut -c 1-trimLength ./Strauss_GBS.fastq > ./Strauss_GBS_trim.fastq
+##     done
+##   )
+## fi
+
 if [[ "$MY_FILENAME" = "NULL" ]] && [[ "$MY_OUTPUT" = "NULL" ]]; then
 (
 	for i in ./*.fastq; do
@@ -167,6 +171,9 @@ if [[ "$MY_FILENAME" = "NULL" ]] && [[ "$MY_OUTPUT" = "NULL" ]]; then
 		cut -c "$MY_STARTING_BASE"-"$TRUE_TRIM_POSITION" "$i" > ./"$MYBASENAME"_trim.fastq
 	done
 )
+	mkdir orig_fastq trimmed_fastq
+	mv ./*_trim.fastq ./trimmed_fastq/
+	mv ./*.fastq ./orig_fastq/
 fi
 
 
