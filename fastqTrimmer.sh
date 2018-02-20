@@ -5,7 +5,7 @@
 MY_FILENAME=NULL
 MY_STARTING_BASE=1
 MY_TRIM_LENGTH=100
-MY_OUTPUTFILE=NULL
+MY_OUTPUT=NULL
 
 ############ CREATE USAGE & HELP TEXTS
 Usage="Usage: $(basename "$0") [Help: -h help] [Options: -i l] workingDir 
@@ -17,7 +17,7 @@ Usage="Usage: $(basename "$0") [Help: -h help] [Options: -i l] workingDir
   -b   startingBase (def: 1) nucleotide position to start keeping bases from
        (=also starting position for counting up to trim point)
   -l   trimLength (def: $MY_TRIM_LENGTH) desired final length of reads
-  -o   outputFile (def: NULL) output file name
+  -o   output (def: NULL; e.g. 'output') basename for output .fastq file name
   
  OVERVIEW
  Trims one or more fastq files from their original length to the length (trimLength) 
@@ -53,7 +53,7 @@ while getopts 'i:b:l:o:' opt ; do
     i) MY_FILENAME=$OPTARG ;;
     b) MY_STARTING_BASE=$OPTARG ;;
     l) MY_TRIM_LENGTH=$OPTARG ;;
-    o) MY_OUTPUTFILE=$OPTARG ;;
+    o) MY_OUTPUT=$OPTARG ;;
 
 ## Missing and illegal options:
     :) printf "Missing argument for -%s\n" "$OPTARG" >&2
@@ -108,15 +108,15 @@ fi
 	cd $MY_PATH
 
 ## Pseudocode:
-
-if only i is specified; then
-  warning will trim file in place
-  cut -c 1-trimLength ./inputFile.fastq > ./inputFile.fastq.tmp
-  rm ./inputFile.fastq
-  mv ./inputFile.fastq.tmp ./inputFile.fastq
-elif i and o are specified; then
-  cut -c 1-trimLength ./inputFile.fastq > ./outputFile.fastq
-fi
+##
+## if only i is specified; then
+##   warning will trim file in place
+##   cut -c 1-trimLength ./inputFile.fastq > ./inputFile.fastq.tmp
+##   rm ./inputFile.fastq
+##   mv ./inputFile.fastq.tmp ./inputFile.fastq
+## elif i and o are specified; then
+##   cut -c 1-trimLength ./inputFile.fastq > ./outputFile.fastq
+## fi
 
 if i = NULL; then
   (
@@ -126,6 +126,49 @@ if i = NULL; then
     done
   )
 fi
+
+
+## CASE 1 and 2 - with input name only, or with both input and output specified, respectively.
+## Do this with a big if-elif-fi statement, while reading user input to check and doing a 
+## conditional subroutine.
+if [[ "$MY_FILENAME" != "NULL" ]] && [[ "$MY_OUTPUT" = "NULL" ]]; then
+	echo "WARNING!  | $(date) |          fastqTrimmer will trim the input file in place and replace the old file with the trimmed file. "
+	echo ""
+	read -p "Do you want to proceed? (0=no, 1=yes) [ def: 0 ] : " TRIM_REPLACE_SWITCH 
+	echo ""
+#
+	if [[ "$TRIM_REPLACE_SWITCH" = 0 ]]; then
+		echo "WARNING!  | $(date) |                          ILLEGAL OPTION. Quitting... "
+		exit 1
+	elif [[ "$TRIM_REPLACE_SWITCH" = 1 ]]; then
+		TRUE_TRIM_POSITION="$(calc $MY_TRIM_LENGTH + $MY_STARTING_BASE - 1)"
+		MYBASENAME="$(basename $MY_FILENAME '.fastq')"
+		cut -c "$MY_STARTING_BASE"-"$TRUE_TRIM_POSITION" "$MY_FILENAME" > ./"$MYBASENAME".fastq.tmp
+		rm "$MY_FILENAME"
+		mv ./"$MYBASENAME".fastq.tmp ./"$MYBASENAME".fastq	
+	fi
+#
+elif [[ "$MY_FILENAME" != "NULL" ]] && [[ "$MY_OUTPUT" != "NULL" ]]; then
+		TRUE_TRIM_POSITION="$(calc $MY_TRIM_LENGTH + $MY_STARTING_BASE - 1)"
+		cut -c "$MY_STARTING_BASE"-"$TRUE_TRIM_POSITION" "$MY_FILENAME" > ./"$MY_OUTPUT".fastq
+fi
+
+
+## CASE 3 - perhaps the normal case. Input file and output are left at their NULL defaults
+## (not specified) and so we assume a working dir with multiple .fastq files and we loop through
+## the fastqs, trim them according to user specifications, and then output '"$MYBASENAME"_trim.fastq'
+## style output file names.
+if [[ "$MY_FILENAME" = "NULL" ]] && [[ "$MY_OUTPUT" = "NULL" ]]; then
+(
+	for i in ./*.fastq; do
+		echo "$i"
+		TRUE_TRIM_POSITION="$(calc $MY_TRIM_LENGTH + $MY_STARTING_BASE - 1)"
+		MYBASENAME="$(basename $i '.fastq')"
+		cut -c "$MY_STARTING_BASE"-"$TRUE_TRIM_POSITION" "$i" > ./"$MYBASENAME"_trim.fastq
+	done
+)
+fi
+
 
 exit 0
 
