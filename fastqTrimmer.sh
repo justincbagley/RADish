@@ -27,7 +27,13 @@ Usage="Usage: $(basename "$0") [Help: -h help] [Options: -i l] workingDir
  example, the author has used this script to prepare fastqs from different lanes of 
  Illumina sequencing on different or mixed sets of samples prior to de novo or 
  reference-based assembly and SNP calling in pyRAD (Eaton 2014) or ipyrad (Eaton and 
- Overcast 2017). 
+ Overcast 2017).
+ 
+ Several options are available. If an input file is specified using the -i flag, then only 
+ that file will be trimmed, and if no output basename (-o) is given then the trimmed file 
+ will replace the original file. If no input file or output names are given, then the 
+ script will trim all .fastq files in the current working directory (final workingDir
+ argument).
 
  CITATION
  Bagley, J.C. 2017. RADish v0.1.0. GitHub repository, Available at: 
