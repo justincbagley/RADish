@@ -44,8 +44,8 @@ cat ./header.tmp ./fastq_lengths_summary.tmp > ./fastq_lengths_summary.txt
 SHORTEST_READS="$(cut -f2 -d$'\t' fastq_lengths_summary.txt | sort -n | head -2 | tail -n1 | sed 's/\ //g')"
 LONGEST_READS="$(cut -f2 -d$'\t' fastq_lengths_summary.txt | sort -n | tail -1 | tail -n1 | sed 's/\ //g')"
 
-echo "INFO      | $(date) | Shortest read length: $SHORTEST_READS "
-echo "INFO      | $(date) | Longest read length: $LONGEST_READS "
+echo "INFO      | $(date) | Shortest read length: $SHORTEST_READS bp "
+echo "INFO      | $(date) | Longest read length: $LONGEST_READS bp "
 echo "INFO      | $(date) | Results output to 'fastq_lengths_summary.txt' in current working directory."
 
 echo "INFO      | $(date) | Cleaning up workspace... "
