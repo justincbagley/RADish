@@ -16,8 +16,6 @@ echo "
 ##########################################################################################
 "
 
-## cd /gpfs_fs/home/eckertlab/Mitra/chapter2/dedupe
-
 if [[ -s names.txt  ]]; then
 	rm ./names.txt
 fi
