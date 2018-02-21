@@ -61,5 +61,3 @@ echo "INFO      | $(date) | Bye.
 
 exit 0
 
-exit 0
-
