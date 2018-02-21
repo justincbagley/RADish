@@ -32,7 +32,7 @@ fi
 	done 
 )
 
-NUM_FASTQS="$(wc -l ./names.txt)"
+NUM_FASTQS="$(wc -l ./names.txt | sed 's/\ \.\/names\.txt//g')"
 echo "INFO      | $(date) |          Found $NUM_FASTQS .fastq files in current working directory. "
 
 paste ./names.txt ./lengths.txt > fastq_lengths_summary.tmp
@@ -48,7 +48,18 @@ echo "INFO      | $(date) |          Shortest read length: $SHORTEST_READS "
 echo "INFO      | $(date) |          Longest read length: $LONGEST_READS "
 echo "INFO      | $(date) |          Results output to 'fastq_lengths_summary.txt' in current working directory."
 
-rm ./header.tmp ./fastq_lengths_summary.tmp
+echo "INFO      | $(date) |          Cleaning up workspace... "
+rm ./header.tmp ./fastq_lengths_summary.tmp ./names.txt ./lengths.txt
+
+echo "INFO      | $(date) | Done checking fastq read lengths. "
+echo "INFO      | $(date) | Bye.
+"
+#
+#
+#
+######################################### END ############################################
+
+exit 0
 
 exit 0
 
