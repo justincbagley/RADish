@@ -10,7 +10,11 @@ fi
 USER_SPEC_PATH="$1"
 
 
-## fastq read length checker
+echo "
+##########################################################################################
+#                     fastq_ReadLengthChecker v0.1.0, February 2018                      #
+##########################################################################################
+"
 
 ## cd /gpfs_fs/home/eckertlab/Mitra/chapter2/dedupe
 
@@ -28,9 +32,23 @@ fi
 	done 
 )
 
-paste ./names.txt ./lengths.txt > fastq_lengths_summary.txt
+NUM_FASTQS="$(wc -l ./names.txt)"
+echo "INFO      | $(date) |          Found $NUM_FASTQS .fastq files in current working directory. "
 
-echo "Results output to 'fastq_lengths_summary.txt' in current working directory."
+paste ./names.txt ./lengths.txt > fastq_lengths_summary.tmp
+
+echo "file	read_length" > header.tmp
+
+cat ./header.tmp ./fastq_lengths_summary.tmp > ./fastq_lengths_summary.txt
+
+SHORTEST_READS="$(cut -f2 -d$'\t' fastq_lengths_summary.txt | sort -n | head -2 | tail -n1 | sed 's/\ //g')"
+LONGEST_READS="$(cut -f2 -d$'\t' fastq_lengths_summary.txt | sort -n | head -2 | tail -n1 | sed 's/\ //g')"
+
+echo "INFO      | $(date) |          Shortest read length: $SHORTEST_READS "
+echo "INFO      | $(date) |          Longest read length: $LONGEST_READS "
+echo "INFO      | $(date) |          Results output to 'fastq_lengths_summary.txt' in current working directory."
+
+rm ./header.tmp ./fastq_lengths_summary.tmp
 
 exit 0
 
