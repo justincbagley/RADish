@@ -48,9 +48,11 @@ echo "INFO      | $(date) | Shortest read length: $SHORTEST_READS bp "
 echo "INFO      | $(date) | Longest read length: $LONGEST_READS bp "
 echo "INFO      | $(date) | Results output to 'fastq_lengths_summary.txt' in current working directory."
 
-echo "INFO      | $(date) | Cleaning up workspace... "
+echo "INFO      | $(date) | "
+echo "INFO      | $(date) | ...Cleaning up workspace... "
 rm ./header.tmp ./fastq_lengths_summary.tmp ./names.txt ./lengths.txt
 
+echo "INFO      | $(date) | "
 echo "INFO      | $(date) | Done checking fastq read lengths. "
 echo "INFO      | $(date) | Bye.
 "
