@@ -1,5 +1,14 @@
 #!/bin/sh
 
+##########################################################################################
+#                         fastqTrimmer.sh v0.1.0, February 2018                          #
+#  SHELL SCRIPT FOR TRIMMING READS IN FASTQ FILES TO USER-SPECIFIED LENGTHS AND ALSO     #
+#  STARTING POSITION                                                                     #
+#  Copyright ©2018 Justinc C. Bagley. For further information, see README and license    #
+#  available in the RADish repository (https://github.com/justincbagley/RADish/). Last   #
+#  update: February 22, 2018. For questions, please email jcbagley@vcu.edu.              #
+##########################################################################################
+
 ############ SCRIPT OPTIONS
 ## OPTION DEFAULTS ##
 MY_FILENAME=NULL
@@ -36,7 +45,7 @@ Usage="Usage: $(basename "$0") [Help: -h help] [Options: -i l] workingDir
  argument).
 
  CITATION
- Bagley, J.C. 2017. RADish v0.1.0. GitHub repository, Available at: 
+ Bagley, J.C. 2018. RADish v0.1.0. GitHub repository, Available at: 
 	<http://github.com/justincbagley/RADish>.
 
  REFERENCES

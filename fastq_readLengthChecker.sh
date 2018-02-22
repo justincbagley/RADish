@@ -1,5 +1,13 @@
 #!/bin/sh
 
+##########################################################################################
+#                     fastq_ReadLengthChecker v0.1.0, February 2018                      #
+#  SHELL SCRIPT FOR CHECKING AND SUMMARIZING LENGTHS OF READS IN FASTQ FILES             #
+#  Copyright ©2018 Justinc C. Bagley. For further information, see README and license    #
+#  available in the RADish repository (https://github.com/justincbagley/RADish/). Last   #
+#  update: February 22, 2018. For questions, please email jcbagley@vcu.edu.              #
+##########################################################################################
+
 ############ SKIP OVER THE PROCESSED OPTIONS
 shift $((OPTIND-1)) 
 # Check for mandatory positional parameters
