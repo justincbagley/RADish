@@ -1,7 +1,7 @@
 #!/bin/sh
 
 ##########################################################################################
-#                         fastqTrimmer.sh v0.1.0, February 2018                          #
+#                           fastqTrimmer v0.1.0, February 2018                           #
 #  SHELL SCRIPT FOR TRIMMING READS IN FASTQ FILES TO USER-SPECIFIED LENGTHS AND ALSO     #
 #  STARTING POSITION                                                                     #
 #  Copyright ©2018 Justinc C. Bagley. For further information, see README and license    #
@@ -91,7 +91,7 @@ USER_SPEC_PATH="$1"
 
 echo "
 ##########################################################################################
-#                         fastqTrimmer.sh v0.1.0, February 2018                          #
+#                           fastqTrimmer v0.1.0, February 2018                           #
 ##########################################################################################
 "
 
