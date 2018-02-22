@@ -1,2 +1,2 @@
 # RADish
-Scripts aiding file processing and analysis of RAD and GBS data
+Scripts aiding file processing and analysis of RADseq and GBS data
