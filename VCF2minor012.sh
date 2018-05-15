@@ -3,7 +3,8 @@
 
 ##########################################################################################
 #                             VCF2minor012 v0.1.0, May 2018                              #
-#  CONVERTS INPUT VCF FILE INTO MINOR ALLELE-CODED 012 GENOTYPE MATRIX, VIA PLINK        #
+#  CONVERTS INPUT VCF FILE INTO REGULAR AND MINOR ALLELE-CODED 012 GENOTYPE MATRIX       #
+#  FORMATS, USING VCFTOOLS AND PLINK                                                     #
 #  Copyright ©2018 Justinc C. Bagley. For further information, see README and license    #
 #  available in the RADish repository (https://github.com/justincbagley/RADish/). This   #
 #  script was last updated May 15, 2018. For questions, please email jcbagley@vcu.edu.   #
@@ -120,7 +121,7 @@ echo "INFO      | $(date) |          Finalizing directory structure, conducting 
 	mv ./"$MY_VCF_BASENAME"_plink_recode12.ped ./012/
 
 
-echo "INFO      | $(date) | Done converting SNPs from VCF format to minor allele-coded 012 genotype format using VCF2minor012.sh. "
+echo "INFO      | $(date) | Done converting SNPs from VCF format to regular and minor allele-coded 012 genotype formats using VCF2minor012.sh. "
 echo "INFO      | $(date) | Bye.
 "
 #
