@@ -120,7 +120,7 @@ echo "INFO      | $(date) |          Finalizing directory structure, conducting 
 	mv ./"$MY_VCF_BASENAME"_plink_recode12.ped ./012/
 
 
-echo "INFO      | $(date) | Done converting SNPs from VCF format to minor-allele coded 012 genotype format using VCF2minor012.sh. "
+echo "INFO      | $(date) | Done converting SNPs from VCF format to minor allele-coded 012 genotype format using VCF2minor012.sh. "
 echo "INFO      | $(date) | Bye.
 "
 #
