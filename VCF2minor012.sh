@@ -11,8 +11,7 @@
 
 ############ SCRIPT OPTIONS
 ## OPTION DEFAULTS ##
-#MY_INPUT_VCF=input.vcf
-#MY_MINOR012_OUTPUT=minor012.txt
+#NONE
 
 ############ USAGE & HELP TEXTS
 Usage="Usage: $(basename "$0") [Help: -h help] <inputVCF> <output>
