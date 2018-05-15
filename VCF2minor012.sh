@@ -37,14 +37,17 @@ Usage="Usage: $(basename "$0") [Help: -h help] <inputVCF> <output>
  command line interface as 'vcftools' and 'plink', respectively. 
 
  CITATION
- Bagley, J.C. 2017. RADish v0.1.0. GitHub repository, Available at: 
+ Bagley JC (2017) RADish v0.1.0. GitHub repository, Available at: 
 	<http://github.com/justincbagley/RADish>.
 
  REFERENCES
- Bagley, J.C. 2017. RADish v0.1.0. GitHub repository, Available at: 
+ Bagley JC (2017) RADish v0.1.0. GitHub repository, Available at: 
 	<http://github.com/justincbagley/RADish>.
  Chang CC, Chow CC, Tellier LCAM, Vattikuti S, Purcell SM, Lee JJ (2015) Second-generation 
 	PLINK: rising to the challenge of larger and richer datasets. GigaScience, 4.
+ Danecek P, Auton A, Abecasis G, Albers CA, Banks E, DePristo MA, Handsaker RE, Lunter G, 
+ 	Marth GT, Sherry ST, McVean G (2011) The variant call format and VCFtools. Bioinformatics, 
+ 	27, 2156-2158.
  Purcell SM, Chang CC (2017) PLINK v1.9. [software] Available from:
 	<http://www.cog-genomics.org/plink/1.9/> (Last accessed 15 May 2018).
 "
