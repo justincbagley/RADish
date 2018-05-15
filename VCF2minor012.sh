@@ -72,6 +72,8 @@ TAB=$(printf '\t');
 
 
 ###### Convert VCF to plink with vcftools:
+echo "INFO      | $(date) |          Converting input VCF to PLINK ped format... "
+
 	MY_VCF_BASENAME="$(basename $1)"
 	echo "$MY_VCF_BASENAME"
 
@@ -83,6 +85,7 @@ TAB=$(printf '\t');
 ## Here, "$MY_VCF_BASENAME"_plink indicates the basename of the .ped and .map files, both 
 ## of which are needed and are (must be) present in the current working directory for the 
 ## conversions to 012/minor012 files to work.
+echo "INFO      | $(date) |          Converting ped file to '012' genotype matrix... "
 
 	plink --file "$MY_VCF_BASENAME"_plink --recode12 --tab --out "$MY_VCF_BASENAME"_plink_recode12
 
@@ -94,6 +97,8 @@ TAB=$(printf '\t');
 ## 1 1 - 2 minor alleles --> 2
 ## 1 2 - 1 minor allele  --> 1
 ## 2 2 - 0 minor alleles --> 0
+echo "INFO      | $(date) |          Converting regular 012 matrix to minor allele-coded 012 matrix named $2.txt... "
+
 	cp ./"$MY_VCF_BASENAME"_plink_recode12.ped ./"$2".txt;
 
 	sed -i 's/'"$TAB"'0\ 0/'"$TAB"'\-9/g; s/'"$TAB"'1\ 1/'"$TAB"'2/g; s/'"$TAB"'1\ 2/'"$TAB"'1/g; s/'"$TAB"'2\ 2/'"$TAB"'0/g' ./"$2".txt;
@@ -101,7 +106,9 @@ TAB=$(printf '\t');
 	cp ./"$2".txt ./minor012/"$2".txt;
 
 
-## File checks:
+###### File checks etc.:
+echo "INFO      | $(date) |          Finalizing directory structure, conducting final file checks... "
+
 	mkdir checks;
 	cat ./"$MY_VCF_BASENAME"_plink_recode12.ped | awk '{print $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15}' | head -n40 > ./checks/ped_recode12_15x40Check.txt;
 	head -n1 ./"$MY_VCF_BASENAME"_plink_recode12.ped > ./checks/ped_recode12_head1.txt;
