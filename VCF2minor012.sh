@@ -30,10 +30,11 @@ Usage="Usage: $(basename "$0") [Help: -h help] <inputVCF> <output>
  counts of the minor allele. The final regular 012 matrix is placed in a '012' subfolder
  created by the program; the final minor allele-coded 012 matrix is placed into a 'minor012'
  subfolder, as well as the main working directory (for ease of access).
-	This script is part of RADish (Bagley 2017). Please see the RADish website for 
- additional information including the license (https://github.com/justincbagley/RADish/). The 
- main dependency of this software is PLINK v1.9++ (Purcell and Chang 2017), which must be 
- installed and available from the user's command line interface as 'plink'. 
+	This script is part of the RADish repository. Please see the RADish website for 
+ additional information including the license (https://github.com/justincbagley/RADish/).  
+ The main dependencies of this software are vcftools v0.1++ (Danecek et al. 2011) and PLINK 
+ v1.9++ (Purcell and Chang 2017), which must be installed and available from the user's 
+ command line interface as 'vcftools' and 'plink', respectively. 
 
  CITATION
  Bagley, J.C. 2017. RADish v0.1.0. GitHub repository, Available at: 
