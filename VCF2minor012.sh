@@ -5,7 +5,7 @@
 #                             VCF2minor012 v0.1.0, May 2018                              #
 #  CONVERTS INPUT VCF FILE INTO MINOR ALLELE-CODED 012 GENOTYPE MATRIX, VIA PLINK        #
 #  Copyright ©2018 Justinc C. Bagley. For further information, see README and license    #
-#  available in the RADish repository (https://github.com/justincbagley/RADish/. This    #
+#  available in the RADish repository (https://github.com/justincbagley/RADish/). This   #
 #  script was last updated May 15, 2018. For questions, please email jcbagley@vcu.edu.   #
 ##########################################################################################
 
@@ -27,8 +27,13 @@ Usage="Usage: $(basename "$0") [Help: -h help] <inputVCF> <output>
  input SNP dataset into 1) a '012' genotype matrix with standard PLINK (Chang et al. 2015) 
  formatting, which includes counts of the reference allele (whether it is the major or minor 
  allele is not taken into account), and 2) a minor-allele coded '012' genotype matrix with 
- counts of the minor allele. The main dependency of this software is PLINK v1.9++ (Purcell
- and Chang 2017), which must be available from the user's command line interface as 'plink'. 
+ counts of the minor allele. The final regular 012 matrix is placed in a '012' subfolder
+ created by the program; the final minor allele-coded 012 matrix is placed into a 'minor012'
+ subfolder, as well as the main working directory (for ease of access).
+	This script is part of the RADish repository. Please see the RADish website for 
+ additional information including the license (https://github.com/justincbagley/RADish/). The 
+ main dependency of this software is PLINK v1.9++ (Purcell and Chang 2017), which must be 
+ installed and available from the user's command line interface as 'plink'. 
 
  CITATION
  Bagley, J.C. 2017. RADish v0.1.0. GitHub repository, Available at: 
@@ -93,7 +98,8 @@ head -n1 ./"$MY_VCF_BASENAME"_recode12.ped > ./checks/ped_recode12_head1.txt;
 cat ./"$2".txt | awk '{print $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15}' | head -n40 > ./checks/"$2"_15x40Check.txt;
 head -n1 ./"$2".txt > ./checks/"$2"_head1.txt;
 
-
+mkdir 012
+mv ./"$MY_VCF_BASENAME"_recode12.ped ./012/
 
 echo "INFO      | $(date) | Done converting SNPs from VCF format to minor-allele coded 012 genotype format using VCF2minor012.sh. "
 echo "INFO      | $(date) | Bye.
