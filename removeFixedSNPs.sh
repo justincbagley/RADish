@@ -2,10 +2,12 @@
 
 ##########################################################################################
 #                            removeFixedSNPs v0.1.0, May 2018                            #
-#  Author: Justin C. Bagley                                                              #
-#  Last Update: May 22, 2018                                                             #
-#  Function: Removes monomorphic SNPs from Bayenv2 input file (or headless/nonindexed    #
-#    geno file (e.g. minor allele-coded genotype SNP matrix)                             #
+#  SCRIPT THAT AUTOMATES REMOVING MONOMORPHIC SNP LOCI (FIXED SNPs), IF PRESENT, FROM    #
+#  BAYENV2 INPUT SNPSFILE; ALSO WORKS ON HEADLESS/NONINDEXED GENO FILE (e.g. MINOR       #
+#  ALLELE-CODED GENOTYPE SNP MATRIX FILES)                                               #
+#  Copyright ©2018 Justinc C. Bagley. For further information, see README and license    #
+#  available on GitHub (https://github.com/justincbagley/). Last update: May 22, 2018.   #
+#  For questions, please email jcbagley@vcu.edu.                                         #
 ##########################################################################################
 
 ##  USAGE: ./removeFixedSNPs.sh <bayenvInput> <zeroSumRowList>
