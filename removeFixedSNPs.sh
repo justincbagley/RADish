@@ -6,8 +6,8 @@
 #  BAYENV2 INPUT SNPSFILE; ALSO WORKS ON HEADLESS/NONINDEXED GENO FILE (e.g. MINOR       #
 #  ALLELE-CODED GENOTYPE SNP MATRIX FILES)                                               #
 #  Copyright ©2018 Justinc C. Bagley. For further information, see README and license    #
-#  available on GitHub (https://github.com/justincbagley/). Last update: May 22, 2018.   #
-#  For questions, please email jcbagley@vcu.edu.                                         #
+#  available in the RADish repository (https://github.com/justincbagley/RADish/). This   #
+#  script was last updated May 22, 2018. For questions, please email jcbagley@vcu.edu.   #
 ##########################################################################################
 
 ##  USAGE: ./removeFixedSNPs.sh <bayenvInput> <zeroSumRowList>
