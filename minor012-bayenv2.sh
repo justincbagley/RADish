@@ -5,8 +5,8 @@
 #  SCRIPT FOR CONVERTING MINOR-ALLELE-CODED 012 GENOTYPE MATRIX INTO 'SNPSFILE' INPUT    #
 #  FILE OF ALLELE COUNTS OF *POLYMORPHIC LOCI ONLY* FOR BAYENV2                          #
 #  Copyright ©2018 Justinc C. Bagley. For further information, see README and license    #
-#  available on GitHub (https://github.com/justincbagley/). Last update: May 22, 2018.   #
-#  For questions, please email jcbagley@vcu.edu.                                         #
+#  available in the RADish repository (https://github.com/justincbagley/RADish/). This   #
+#  script was last updated May 22, 2018. For questions, please email jcbagley@vcu.edu.   #
 ##########################################################################################
 
 ############ SCRIPT OPTIONS
