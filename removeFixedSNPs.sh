@@ -1,6 +1,11 @@
 #!/bin/sh
 
 ##########################################################################################
+#      ____  ___    ____  _      __                                                      #
+#     / __ \/   |  / __ \(_)____/ /_                                                     #
+#    / /_/ / /| | / / / / / ___/ __ \                                                    #
+#   / _, _/ ___ |/ /_/ / (__  ) / / /                                                    #
+#  /_/ |_/_/  |_/_____/_/____/_/ /_/                                                     #
 #                            removeFixedSNPs v0.1.0, May 2018                            #
 #  SCRIPT THAT AUTOMATES REMOVING MONOMORPHIC SNP LOCI (FIXED SNPs), IF PRESENT, FROM    #
 #  BAYENV2 INPUT SNPSFILE; ALSO WORKS ON HEADLESS/NONINDEXED GENO FILE (e.g. MINOR       #
