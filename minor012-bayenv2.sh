@@ -1,6 +1,11 @@
 #!/bin/sh
 
 ##########################################################################################
+#      ____  ___    ____  _      __                                                      #
+#     / __ \/   |  / __ \(_)____/ /_                                                     #
+#    / /_/ / /| | / / / / / ___/ __ \                                                    #
+#   / _, _/ ___ |/ /_/ / (__  ) / / /                                                    #
+#  /_/ |_/_/  |_/_____/_/____/_/ /_/                                                     #
 #                           minor012-bayenv2 v0.1.0, May 2018                            #
 #  SCRIPT FOR CONVERTING MINOR-ALLELE-CODED 012 GENOTYPE MATRIX INTO 'SNPSFILE' INPUT    #
 #  FILE OF ALLELE COUNTS OF *POLYMORPHIC LOCI ONLY* FOR BAYENV2                          #
