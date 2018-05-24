@@ -1,6 +1,11 @@
 #!/bin/sh
 
 ##########################################################################################
+#      ____  ___    ____  _      __                                                      #
+#     / __ \/   |  / __ \(_)____/ /_                                                     #
+#    / /_/ / /| | / / / / / ___/ __ \                                                    #
+#   / _, _/ ___ |/ /_/ / (__  ) / / /                                                    #
+#  /_/ |_/_/  |_/_____/_/____/_/ /_/                                                     #
 #                           fastqTrimmer v0.1.0, February 2018                           #
 #  SHELL SCRIPT FOR TRIMMING READS IN FASTQ FILES TO USER-SPECIFIED LENGTHS AND ALSO     #
 #  STARTING POSITION                                                                     #
