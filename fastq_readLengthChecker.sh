@@ -1,6 +1,11 @@
 #!/bin/sh
 
 ##########################################################################################
+#      ____  ___    ____  _      __                                                      #
+#     / __ \/   |  / __ \(_)____/ /_                                                     #
+#    / /_/ / /| | / / / / / ___/ __ \                                                    #
+#   / _, _/ ___ |/ /_/ / (__  ) / / /                                                    #
+#  /_/ |_/_/  |_/_____/_/____/_/ /_/                                                     #
 #                     fastq_ReadLengthChecker v0.1.0, February 2018                      #
 #  SHELL SCRIPT FOR CHECKING AND SUMMARIZING LENGTHS OF READS IN FASTQ FILES             #
 #  Copyright ©2018 Justinc C. Bagley. For further information, see README and license    #
