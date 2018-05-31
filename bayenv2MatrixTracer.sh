@@ -11,7 +11,7 @@
 #  (MATRIXFILE) ESTIMATION USING MCMC IN BAYENV2                                         #
 #  Copyright ©2018 Justinc C. Bagley. For further information, see README and license    #
 #  available in the RADish repository (https://github.com/justincbagley/RADish/). This   #
-#  script was last updated May 30, 2018. For questions, please email jcbagley@vcu.edu.   #
+#  script was last updated May 31, 2018. For questions, please email jcbagley@vcu.edu.   #
 ##########################################################################################
 
 ##  USAGE: ./bayenv2MatrixTracer.sh [Options] <workingDir> > <outputFile>
@@ -29,7 +29,7 @@ MY_WRITEOVER_SWITCH=NULL
 MY_OUTPUT_FILE=output.txt
 
 ############ CREATE USAGE & HELP TEXTS
-Usage="Usage: $(basename "$0") [Help: -h help] [Options: -i n f p w o] <workingDir> > <outputFile>
+Usage="Usage: $(basename "$0") [Help: -h help] [Options: -i n f p w o] <workingDir>
  ## Help:
   -h   help text (also: -help)
 
