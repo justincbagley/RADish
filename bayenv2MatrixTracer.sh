@@ -47,16 +47,15 @@ Usage="Usage: $(basename "$0") [Help: -h help] [Options: -i n f p w o] <workingD
  ## EXAMPLES: 
  ## Practical usage example (with description below):
 
- ./removeFixedSNPs.sh -i ./matrix.txt -p 104 . > out.txt
+ ./removeFixedSNPs.sh -i ./matrix.txt -p 104 .
  
  The above reads input file named 'matrix.txt', with 200 matrices from a 100,000 generation
  bayenv2 run in which matrices were logged every 500 steps, and which involved data (hence also
- output rows/cols) for 104 populations. The greater than symbol is the shell redirection command
- and sends all screenout to a file named out.txt, so as not to overload the terminal window
- with thousands of lines of matrix values.
+ output rows/cols) for 104 populations. Since <outputFile> is not defined with the -o flag, stdout
+ and stderr will be written to the default output filename, 'output.txt'.
 
 Copyright ©2018 Justinc C. Bagley
-May 30, 2018, Richmond, VA
+May 31, 2018, Richmond, VA
 "
 
 if [[ "$1" == "-h" ]] || [[ "$1" == "-help" ]]; then
@@ -395,7 +394,7 @@ dev.off()
 ### GEWEKE DIAG-BASED CONVERGENCE POINT:
 eig1_geweke_mat <- matrix(data=NA, nrow=20, ncol=1, dimnames=NULL)
 
-## first val, half step (2.5% frac1)
+## first value, do a half step (2.5% frac1)
 res <- geweke.diag(as.numeric(eigen_mat_df$MY_EIG1_VAR), 0.025, 0.975)
 eig1_geweke_mat[1,] <- res$MY_Z_VAR[[1]]
 
