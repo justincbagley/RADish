@@ -136,7 +136,7 @@ else
 fi
 
 
-echo "INFO      | $(date) |          Done splitting up your SNPSFILE. "
+echo "INFO      | $(date) |          Done splitting up your SNPSFILE using bayenv2SNPSFILESplitter. "
 echo "INFO      | $(date) |          Bye. "
 
 exit 0
