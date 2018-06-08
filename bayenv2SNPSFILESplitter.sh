@@ -40,7 +40,7 @@ Usage="Usage: $(basename "$0") [Help: -h help] -i <inputSNPSFILE> -n <numSNPs> <
  '.' for the current working directory). The default value for the total number of SNPs is 
  '1000' and this is just a general value that most users will want to set to the correct 
  number of SNPs in their datasets. If this value undershoots the actual number of SNPs, then 
- SNPs that are left out wil not be present in the resulting BAYENV2 input files (or down-
+ SNPs that are left out wil not be present in the resulting BAYENV2 input files (and down-
  stream output will be of different length than expected). See the BAYENV2 user manual for
  further details including file format specifications.
 
