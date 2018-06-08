@@ -85,10 +85,6 @@ echo "$Usage"
 fi
 USER_SPEC_PATH="$1"
 
-echo "INFO      | $(date) |          Setting user-specified path to: "
-echo "$USER_SPEC_PATH "	
-
-
 echo "
 ##########################################################################################
 #                       bayenv2SNPSFILESplitter v0.1.0, June 2018                        #
@@ -97,7 +93,9 @@ echo "
 
 ######################################## START ###########################################
 ## SETUP
-MY_PATH=`pwd -P`
+
+echo "INFO      | $(date) |          User-specified path is: "
+echo "$USER_SPEC_PATH "	
 calc () { 
 	bc -l <<< "$@"  
 }
