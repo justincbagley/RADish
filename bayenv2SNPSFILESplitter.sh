@@ -25,7 +25,7 @@ MY_NUM_SNPS=1000
 # ./bayenv2SNPSFILESplitter.sh -i SWWP_104_SNPSFILE.txt -n 72845 .
 
 ## Usage text for users:
-Usage="Usage: $(basename "$0") [Help: -h help] [Options: -i n] workingDir 
+Usage="Usage: $(basename "$0") [Help: -h help] -i <inputSNPSFILE> -n <numSNPs> <workingDir> 
  ## Help:
   -h   help text (also: -help)
 
