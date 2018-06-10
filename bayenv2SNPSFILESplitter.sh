@@ -101,6 +101,21 @@ calc () {
 }
 
 
+####### CHECK MACHINE TYPE:
+##--This idea and code came from the following URL (Lines 87-95 code is reused here): 
+##--https://stackoverflow.com/questions/3466166/how-to-check-if-running-in-cygwin-mac-or-linux 
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     machine=Linux;;
+    Darwin*)    machine=Mac;;
+    CYGWIN*)    machine=Cygwin;;
+    MINGW*)     machine=MinGw;;
+    *)          machine="UNKNOWN:${unameOut}"
+esac
+echo "INFO      | $(date) |          System: ${machine}"
+
+
+
 	################################## SNPSFILEsplitter ##################################
 
 SNPSFILEsplitter () {	
@@ -109,6 +124,23 @@ cp "$MY_SNPSFILE" ./SNPs.tmp
 mkdir SNPFILEs/
 
 echo "INFO      | $(date) |          Splitting input SNPSFILE $MY_SNPSFILE into one file per SNP... "
+if [[ "${machine}" = "Mac" ]]; then
+
+{
+	(
+		for i in $(seq 1 "$MY_NUM_SNPS"); do
+			sed -n "1,2p" ./SNPs.tmp > ./SNPFILEs/SNP_"$i".txt
+			sed -i '' "1,2d" ./SNPs.tmp
+		done
+	)
+} &> /dev/null
+
+rm ./SNPs.tmp
+
+fi
+
+if [[ "${machine}" = "Linux" ]]; then
+
 {
 	(
 		for i in $(seq 1 "$MY_NUM_SNPS"); do
@@ -119,6 +151,8 @@ echo "INFO      | $(date) |          Splitting input SNPSFILE $MY_SNPSFILE into 
 } &> /dev/null
 
 rm ./SNPs.tmp
+
+fi
 
 }
 
