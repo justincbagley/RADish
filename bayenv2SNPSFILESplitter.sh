@@ -11,7 +11,7 @@
 #  SUBSEQUENT LONG ENVIRONMENTAL ASSOCIATION ANALYSES IN BAYENV2                         #
 #  Copyright ©2018 Justinc C. Bagley. For further information, see README and license    #
 #  available in the RADish repository (https://github.com/justincbagley/RADish/). This   #
-#  script was last updated June 8, 2018. For questions, please email jcbagley@vcu.edu.   #
+#  script was last updated June 10, 2018. For questions, please email jcbagley@vcu.edu.  #
 ##########################################################################################
 
 ############ SCRIPT OPTIONS
