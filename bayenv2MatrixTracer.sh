@@ -14,8 +14,8 @@
 #  script was last updated May 31, 2018. For questions, please email jcbagley@vcu.edu.   #
 ##########################################################################################
 
-##  USAGE: ./bayenv2MatrixTracer.sh [Options] <workingDir> > <outputFile>
-##    e.g. ./removeFixedSNPs.sh -i ./matrix.txt -p 104 .	## matrix.txt, w/200 matrices from 100,000 generation
+##  USAGE: ./bayenv2MatrixTracer.sh [Options] <workingDir>
+##    e.g. ./bayenv2MatrixTracer.sh -i ./matrix.txt -p 104 .	## matrix.txt, w/200 matrices from 100,000 generation
 															## bayenv2 run, logging every 500 steps, and with
 															## data (hence output rows/cols) for 104 populations.
 
