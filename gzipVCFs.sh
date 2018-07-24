@@ -14,7 +14,9 @@
 ##########################################################################################
 
 ## gzips and indexes all VCF (*.vcf) files in current working directory, outputting one 
-## '*.vcf.gz' file and one '*.vcf.gz.tbi' file per input VCF.
+## '*.vcf.gz' file and one '*.vcf.gz.tbi' file per input VCF. Relies upon bgzip and 
+## tabix dependencies and has only been tested on UNIX/LINUX-type systems (macOS High 
+## Sierra and CentOS 5/6/7).
 
 (
 for i in ./*.vcf; do
