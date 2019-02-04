@@ -87,46 +87,68 @@ USER_SPEC_PATH="$1"
 echo "INFO      | $(date) |          Setting user-specified path to: $USER_SPEC_PATH "
 #echo "$USER_SPEC_PATH "	
 
-echo "INFO      | $(date) |          Finding SNP IDs (sample names) and saving them to file... "
+echo "INFO      | $(date) |          Finding SNP IDs and saving them to file... "
 
 if [[ "$ALL_VCF_PWD_SWITCH" -eq "1" ]] && [[ "$SINGLE_VCF_SWITCH" = "0" ]] && [[ "$MY_OUTPUT_FILE_SWITCH" = "NULL" ]]; then
-
 	(
 		for i in ./*.vcf; do
-#			grep -v "^##" "$i" | cut -f3 > "$i".snpIDs.txt
 			echo "INFO      | $(date) |          ###     $i     ### "
-			grep -h "^\#CHROM.*FORMAT" "$i" | perl -pe $'s/^\#CHROM.*FORMAT\t//g' | perl -pe $'s/\t/\n/g' > "$i".snpIDs.txt
-			MY_NUM_SNP_IDS="$(cat ${i}.snpIDs.txt | perl -pe $'s/\t//g; s/\ //g' | wc -l)"
-			echo "INFO      | $(date) |          Saved $MY_NUM_SNP_IDS SNP IDs to file.  "
+			MY_ID_CHECK="$(grep -v '^##' ${i} | cut -f 3 | head -n2 | tail -n+2)"
+			if [[ "$MY_ID_CHECK" = "." ]]; then
+				grep -v "^##" "$i" | cut -f 1,2 | perl -pe $'s/\t/\_/g' | tail -n+2 > "$i".snpIDs.txt
+				MY_NUM_SNP_IDS="$(cat ${i}.snpIDs.txt | perl -pe $'s/\t//g; s/\ //g' | wc -l)"
+			fi
+			if [[ ! "$MY_ID_CHECK" = "." ]]; then
+				grep -v "^##" "$i" | cut -f 3 > "$i".snpIDs.txt
+				MY_NUM_SNP_IDS="$(cat ${i}.snpIDs.txt | perl -pe $'s/\t//g; s/\ //g' | wc -l)"
+			fi
+			echo "INFO      | $(date) |          Saved ${MY_NUM_SNP_IDS} SNP IDs to file.  "
 		done
 	)
 fi
 
 if [[ "$ALL_VCF_PWD_SWITCH" -eq "1" ]] && [[ "$SINGLE_VCF_SWITCH" = "0" ]] && [[ ! "$MY_OUTPUT_FILE_SWITCH" = "NULL" ]]; then
-
 	(
 		for i in ./*.vcf; do
-#			grep -v "^##" "$i" | cut -f3 > "$i"."$MY_OUTPUT_FILE_SWITCH".txt
 			echo "INFO      | $(date) |          ###     $i     ### "
-			grep -h "^\#CHROM.*FORMAT" "$i" | perl -pe $'s/^\#CHROM.*FORMAT\t//g' | perl -pe $'s/\t/\n/g' > "$i"."$MY_OUTPUT_FILE_SWITCH".txt
-			MY_NUM_SNP_IDS="$(cat ${i}.${MY_OUTPUT_FILE_SWITCH}.txt | perl -pe $'s/\t//g; s/\ //g' | wc -l)"
-			echo "INFO      | $(date) |          Saved $MY_NUM_SNP_IDS SNP IDs to file.  "
+			MY_ID_CHECK="$(grep -v '^##' ${i} | cut -f 3 | head -n2 | tail -n+2)"
+			if [[ "$MY_ID_CHECK" = "." ]]; then
+				grep -v "^##" "$i" | cut -f 1,2 | perl -pe $'s/\t/\_/g' | tail -n+2 > "$i"."$MY_OUTPUT_FILE_SWITCH".txt
+				MY_NUM_SNP_IDS="$(cat ${i}.${MY_OUTPUT_FILE_SWITCH}.txt | perl -pe $'s/\t//g; s/\ //g' | wc -l)"
+			fi
+			if [[ ! "$MY_ID_CHECK" = "." ]]; then
+				grep -v "^##" "$i" | cut -f 3 > "$i"."$MY_OUTPUT_FILE_SWITCH".txt
+				MY_NUM_SNP_IDS="$(cat ${i}.${MY_OUTPUT_FILE_SWITCH}.txt | perl -pe $'s/\t//g; s/\ //g' | wc -l)"
+			fi
+			echo "INFO      | $(date) |          Saved ${MY_NUM_SNP_IDS} SNP IDs to file.  "
 		done
 	)
 fi
 
 if [[ ! "$SINGLE_VCF_SWITCH" = "0" ]] && [[ "$MY_OUTPUT_FILE_SWITCH" = "NULL" ]]; then
-#	grep -v "^##" "$SINGLE_VCF_SWITCH" | cut -f3 > "$SINGLE_VCF_SWITCH".snpIDs.txt
-	grep -h "^\#CHROM.*FORMAT" "$SINGLE_VCF_SWITCH" | perl -pe $'s/^\#CHROM.*FORMAT\t//g' | perl -pe $'s/\t/\n/g' > "$SINGLE_VCF_SWITCH".snpIDs.txt
-	MY_NUM_SNP_IDS="$(cat ${SINGLE_VCF_SWITCH}.snpIDs.txt | perl -pe $'s/\t//g; s/\ //g' | wc -l)"
-	echo "INFO      | $(date) |          Saved $MY_NUM_SNP_IDS SNP IDs to file.  "
+		MY_ID_CHECK="$(grep -v '^##' ${SINGLE_VCF_SWITCH} | cut -f3 | head -n2 | tail -n+2)"
+		if [[ "$MY_ID_CHECK" = "." ]]; then
+			grep -v "^##" "$SINGLE_VCF_SWITCH" | cut -f1,2 | perl -pe $'s/\t/\_/g' | tail -n+2 > "$SINGLE_VCF_SWITCH".snpIDs.txt
+			MY_NUM_SNP_IDS="$(cat ${SINGLE_VCF_SWITCH}.snpIDs.txt | perl -pe $'s/\t//g; s/\ //g' | wc -l)"
+		fi
+		if [[ ! "$MY_ID_CHECK" = "." ]]; then
+			grep -v "^##" "$SINGLE_VCF_SWITCH" | cut -f 3 > "$SINGLE_VCF_SWITCH".snpIDs.txt
+			MY_NUM_SNP_IDS="$(cat ${SINGLE_VCF_SWITCH}.snpIDs.txt | perl -pe $'s/\t//g; s/\ //g' | wc -l)"
+		fi
+	echo "INFO      | $(date) |          Saved ${MY_NUM_SNP_IDS} SNP IDs to file.  "
 fi
 
 if [[ ! "$SINGLE_VCF_SWITCH" = "0" ]] && [[ ! "$MY_OUTPUT_FILE_SWITCH" = "NULL" ]]; then
-#	grep -v "^##" "$SINGLE_VCF_SWITCH" | cut -f3 > ."$MY_OUTPUT_FILE_SWITCH".txt
-	grep -h "^\#CHROM.*FORMAT" "$SINGLE_VCF_SWITCH" | perl -pe $'s/^\#CHROM.*FORMAT\t//g' | perl -pe $'s/\t/\n/g' > "$MY_OUTPUT_FILE_SWITCH".txt
-	MY_NUM_SNP_IDS="$(cat ${MY_OUTPUT_FILE_SWITCH}.txt | perl -pe $'s/\t//g; s/\ //g' | wc -l)"
-	echo "INFO      | $(date) |          Saved $MY_NUM_SNP_IDS SNP IDs to file.  "
+		MY_ID_CHECK="$(grep -v '^##' ${SINGLE_VCF_SWITCH} | cut -f 3 | head -n2 | tail -n+2)"
+		if [[ "$MY_ID_CHECK" = "." ]]; then
+			grep -v "^##" "$SINGLE_VCF_SWITCH" | cut -f 1,2 | perl -pe $'s/\t/\_/g' | tail -n+2 > "$MY_OUTPUT_FILE_SWITCH".txt
+			MY_NUM_SNP_IDS="$(cat ${MY_OUTPUT_FILE_SWITCH}.txt | perl -pe $'s/\t//g; s/\ //g' | wc -l)"
+		fi
+		if [[ ! "$MY_ID_CHECK" = "." ]]; then
+			grep -v "^##" "$SINGLE_VCF_SWITCH" | cut -f 3 > "$MY_OUTPUT_FILE_SWITCH".txt
+			MY_NUM_SNP_IDS="$(cat ${MY_OUTPUT_FILE_SWITCH}.txt | perl -pe $'s/\t//g; s/\ //g' | wc -l)"
+		fi
+	echo "INFO      | $(date) |          Saved ${MY_NUM_SNP_IDS} SNP IDs to file.  "
 fi
 
 echo "INFO      | $(date) |          Done. Bye. "
