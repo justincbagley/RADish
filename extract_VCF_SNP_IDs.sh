@@ -6,7 +6,7 @@
 #    / /_/ / /| | / / / / / ___/ __ \                                                    #
 #   / _, _/ ___ |/ /_/ / (__  ) / / /                                                    #
 #  /_/ |_/_/  |_/_____/_/____/_/ /_/                                                     #
-#                      extract_VCF_SNP_IDs.sh v0.1.1, February 2019                      #
+#                      extract_VCF_SNP_IDs.sh v0.1.2, February 2019                      #
 #  SHELL SCRIPT THAT GENERATES LISTS OF SNP IDs FROM VCF FILES IN CURRENT DIRECTORY      #
 #  Copyright ©2019 Justinc C. Bagley. For further information, see README and license    #
 #  available in the RADish repository (https://github.com/justincbagley/RADish/). Last   #
@@ -17,10 +17,11 @@
 ## OPTION DEFAULTS ##
 ALL_VCF_PWD_SWITCH=1
 SINGLE_VCF_SWITCH=0
+DIV_CHROM_ID_SWITCH=0
 MY_OUTPUT_FILE_SWITCH=NULL
 
 ############ CREATE USAGE & HELP TEXTS
-Usage="Usage: $(basename "$0") [Help: -h help] [Options: -a s o] workingDir 
+Usage="Usage: $(basename "$0") [Help: -h help] [Options: -a s d o] workingDir 
  ## Help:
   -h   help text (also: -help)
 
@@ -29,6 +30,9 @@ Usage="Usage: $(basename "$0") [Help: -h help] [Options: -a s o] workingDir
        working directory, <workingDir>
   -s   singleVCF (def: 0, off; other: <VCF_filename>) call to run on a single VCF file with 
        user-specified name, <VCF_filename>, that must follow this flag
+  -d   divCHROM (def: 0, off; 1, on) specify whether, in absence of IDs (ID='.'), to generate 
+       tab-separted IDs file with contig name (CHROM) and position (ID) split into separate
+       columns
   -o   outputFile (def: NULL) specify name of output file (in case of -a 1, this is a partial
        basename for output text files for all VCFs; case -s 1, this is the full basename for 
        the output file for a single VCF)
@@ -57,12 +61,13 @@ if [[ "$1" == "-h" ]] || [[ "$1" == "-help" ]]; then
 fi
 
 ############ PARSE THE OPTIONS
-while getopts 'a:s:o:' opt ; do
+while getopts 'a:s:d:o:' opt ; do
   case $opt in
 
 ## extract_VCF_SNP_IDs options:
     a) ALL_VCF_PWD_SWITCH=$OPTARG ;;
     s) SINGLE_VCF_SWITCH=$OPTARG ;;
+    d) DIV_CHROM_ID_SWITCH=$OPTARG ;;
     o) MY_OUTPUT_FILE_SWITCH=$OPTARG ;;
 
 ## Missing and illegal options:
@@ -95,8 +100,16 @@ if [[ "$ALL_VCF_PWD_SWITCH" -eq "1" ]] && [[ "$SINGLE_VCF_SWITCH" = "0" ]] && [[
 			echo "INFO      | $(date) |          ###     $i     ### "
 			MY_ID_CHECK="$(grep -v '^##' ${i} | cut -f 3 | head -n2 | tail -n+2)"
 			if [[ "$MY_ID_CHECK" = "." ]]; then
-				grep -v "^##" "$i" | cut -f 1,2 | perl -pe $'s/\t/\_/g' | tail -n+2 > "$i".snpIDs.txt
-				MY_NUM_SNP_IDS="$(cat ${i}.snpIDs.txt | perl -pe $'s/\t//g; s/\ //g' | wc -l)"
+				if [[ "$DIV_CHROM_ID_SWITCH" = "0" ]]; then
+					grep -v "^##" "$i" | cut -f 1,2 | perl -pe $'s/\t/\_/g' | tail -n+2 > "$i".snpIDs.txt
+					MY_NUM_SNP_IDS="$(cat ${i}.snpIDs.txt | perl -pe $'s/\t//g; s/\ //g' | wc -l)"
+				elif [[ ! "$DIV_CHROM_ID_SWITCH" = "0" ]]; then
+					grep -v "^##" "$i" | cut -f 1 | perl -pe $'s/\t/\_/g' | tail -n+2 > "$i".snpIDs.CHROM.tmp
+					grep -v "^##" "$i" | cut -f 2 | perl -pe $'s/\t/\_/g' | tail -n+2 > "$i".snpIDs.ID.tmp
+					paste "$i".snpIDs.CHROM.tmp "$i".snpIDs.ID.tmp > "$i".snpIDs.txt
+					MY_NUM_SNP_IDS="$(cat ${i}.snpIDs.txt | perl -pe $'s/\t//g; s/\ //g' | wc -l)"
+					rm ./*.tmp
+				fi
 			fi
 			if [[ ! "$MY_ID_CHECK" = "." ]]; then
 				grep -v "^##" "$i" | cut -f 3 > "$i".snpIDs.txt
@@ -113,8 +126,16 @@ if [[ "$ALL_VCF_PWD_SWITCH" -eq "1" ]] && [[ "$SINGLE_VCF_SWITCH" = "0" ]] && [[
 			echo "INFO      | $(date) |          ###     $i     ### "
 			MY_ID_CHECK="$(grep -v '^##' ${i} | cut -f 3 | head -n2 | tail -n+2)"
 			if [[ "$MY_ID_CHECK" = "." ]]; then
-				grep -v "^##" "$i" | cut -f 1,2 | perl -pe $'s/\t/\_/g' | tail -n+2 > "$i"."$MY_OUTPUT_FILE_SWITCH".txt
-				MY_NUM_SNP_IDS="$(cat ${i}.${MY_OUTPUT_FILE_SWITCH}.txt | perl -pe $'s/\t//g; s/\ //g' | wc -l)"
+				if [[ "$DIV_CHROM_ID_SWITCH" = "0" ]]; then
+					grep -v "^##" "$i" | cut -f 1,2 | perl -pe $'s/\t/\_/g' | tail -n+2 > "$i"."$MY_OUTPUT_FILE_SWITCH".txt
+					MY_NUM_SNP_IDS="$(cat ${i}.${MY_OUTPUT_FILE_SWITCH}.txt | perl -pe $'s/\t//g; s/\ //g' | wc -l)"
+				elif [[ ! "$DIV_CHROM_ID_SWITCH" = "0" ]]; then
+					grep -v "^##" "$i" | cut -f 1 | perl -pe $'s/\t/\_/g' | tail -n+2 > "$i".snpIDs.CHROM.tmp
+					grep -v "^##" "$i" | cut -f 2 | perl -pe $'s/\t/\_/g' | tail -n+2 > "$i".snpIDs.ID.tmp
+					paste "$i".snpIDs.CHROM.tmp "$i".snpIDs.ID.tmp > "$i"."$MY_OUTPUT_FILE_SWITCH".txt
+					MY_NUM_SNP_IDS="$(cat ${i}.${MY_OUTPUT_FILE_SWITCH}.txt | perl -pe $'s/\t//g; s/\ //g' | wc -l)"
+					rm ./*.tmp
+				fi
 			fi
 			if [[ ! "$MY_ID_CHECK" = "." ]]; then
 				grep -v "^##" "$i" | cut -f 3 > "$i"."$MY_OUTPUT_FILE_SWITCH".txt
@@ -128,8 +149,16 @@ fi
 if [[ ! "$SINGLE_VCF_SWITCH" = "0" ]] && [[ "$MY_OUTPUT_FILE_SWITCH" = "NULL" ]]; then
 		MY_ID_CHECK="$(grep -v '^##' ${SINGLE_VCF_SWITCH} | cut -f3 | head -n2 | tail -n+2)"
 		if [[ "$MY_ID_CHECK" = "." ]]; then
-			grep -v "^##" "$SINGLE_VCF_SWITCH" | cut -f1,2 | perl -pe $'s/\t/\_/g' | tail -n+2 > "$SINGLE_VCF_SWITCH".snpIDs.txt
-			MY_NUM_SNP_IDS="$(cat ${SINGLE_VCF_SWITCH}.snpIDs.txt | perl -pe $'s/\t//g; s/\ //g' | wc -l)"
+			if [[ "$DIV_CHROM_ID_SWITCH" = "0" ]]; then
+				grep -v "^##" "$SINGLE_VCF_SWITCH" | cut -f1,2 | perl -pe $'s/\t/\_/g' | tail -n+2 > "$SINGLE_VCF_SWITCH".snpIDs.txt
+				MY_NUM_SNP_IDS="$(cat ${SINGLE_VCF_SWITCH}.snpIDs.txt | perl -pe $'s/\t//g; s/\ //g' | wc -l)"
+			elif [[ ! "$DIV_CHROM_ID_SWITCH" = "0" ]]; then
+				grep -v "^##" "$i" | cut -f 1 | perl -pe $'s/\t/\_/g' | tail -n+2 > "$i".snpIDs.CHROM.tmp
+				grep -v "^##" "$i" | cut -f 2 | perl -pe $'s/\t/\_/g' | tail -n+2 > "$i".snpIDs.ID.tmp
+				paste "$i".snpIDs.CHROM.tmp "$i".snpIDs.ID.tmp > "$SINGLE_VCF_SWITCH".snpIDs.txt
+				MY_NUM_SNP_IDS="$(cat ${SINGLE_VCF_SWITCH}.snpIDs.txt | perl -pe $'s/\t//g; s/\ //g' | wc -l)"
+				rm ./*.tmp
+			fi
 		fi
 		if [[ ! "$MY_ID_CHECK" = "." ]]; then
 			grep -v "^##" "$SINGLE_VCF_SWITCH" | cut -f 3 > "$SINGLE_VCF_SWITCH".snpIDs.txt
@@ -141,8 +170,16 @@ fi
 if [[ ! "$SINGLE_VCF_SWITCH" = "0" ]] && [[ ! "$MY_OUTPUT_FILE_SWITCH" = "NULL" ]]; then
 		MY_ID_CHECK="$(grep -v '^##' ${SINGLE_VCF_SWITCH} | cut -f 3 | head -n2 | tail -n+2)"
 		if [[ "$MY_ID_CHECK" = "." ]]; then
+			if [[ "$DIV_CHROM_ID_SWITCH" = "0" ]]; then
 			grep -v "^##" "$SINGLE_VCF_SWITCH" | cut -f 1,2 | perl -pe $'s/\t/\_/g' | tail -n+2 > "$MY_OUTPUT_FILE_SWITCH".txt
 			MY_NUM_SNP_IDS="$(cat ${MY_OUTPUT_FILE_SWITCH}.txt | perl -pe $'s/\t//g; s/\ //g' | wc -l)"
+			elif [[ ! "$DIV_CHROM_ID_SWITCH" = "0" ]]; then
+				grep -v "^##" "$i" | cut -f 1 | perl -pe $'s/\t/\_/g' | tail -n+2 > "$i".snpIDs.CHROM.tmp
+				grep -v "^##" "$i" | cut -f 2 | perl -pe $'s/\t/\_/g' | tail -n+2 > "$i".snpIDs.ID.tmp
+				paste "$i".snpIDs.CHROM.tmp "$i".snpIDs.ID.tmp > "$MY_OUTPUT_FILE_SWITCH".txt
+				MY_NUM_SNP_IDS="$(cat ${MY_OUTPUT_FILE_SWITCH}.txt | perl -pe $'s/\t//g; s/\ //g' | wc -l)"
+				rm ./*.tmp
+			fi
 		fi
 		if [[ ! "$MY_ID_CHECK" = "." ]]; then
 			grep -v "^##" "$SINGLE_VCF_SWITCH" | cut -f 3 > "$MY_OUTPUT_FILE_SWITCH".txt
