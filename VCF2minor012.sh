@@ -7,12 +7,12 @@
 #    / /_/ / /| | / / / / / ___/ __ \                                                    #
 #   / _, _/ ___ |/ /_/ / (__  ) / / /                                                    #
 #  /_/ |_/_/  |_/_____/_/____/_/ /_/                                                     #
-#                             VCF2minor012 v0.1.0, May 2018                              #
+#                           VCF2minor012 v0.2.0, October 2021                            #
 #  CONVERTS INPUT VCF FILE INTO REGULAR AND MINOR ALLELE-CODED 012 GENOTYPE MATRIX       #
 #  FORMATS, USING VCFTOOLS AND PLINK                                                     #
-#  Copyright ©2018 Justinc C. Bagley. For further information, see README and license    #
+#  Copyright ©2021 Justinc C. Bagley. For further information, see README and license    #
 #  available in the RADish repository (https://github.com/justincbagley/RADish/). This   #
-#  script was last updated May 15, 2018. For questions, please email jcbagley@vcu.edu.   #
+#  script was last updated October 8, 2021. For questions, please email jbagley@jsu.edu. #
 ##########################################################################################
 
 ############ SCRIPT OPTIONS
@@ -65,7 +65,7 @@ fi
 
 echo "
 ##########################################################################################
-#                             VCF2minor012 v0.1.0, May 2018                              #
+#                           VCF2minor012 v0.2.0, October 2021                            #
 ##########################################################################################
 "
 
@@ -76,15 +76,51 @@ MY_PATH=`pwd -P`
 echo "INFO      | $(date) |          Setting working directory to: $MY_PATH "
 TAB=$(printf '\t');
 
+###### Check machine type:
+echo "INFO      | $(date) |          Checking machine type... "
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     machine=Linux;;
+    Darwin*)    machine=Mac;;
+    CYGWIN*)    machine=Cygwin;;
+    MINGW*)     machine=MinGw;;
+    *)          machine="UNKNOWN:${unameOut}"
+esac
+echo "INFO      | $(date) |          System: ${machine} "
+echo "INFO      | $(date) |          ... "
+
 
 ###### Convert VCF to plink with vcftools:
 echo "INFO      | $(date) |          Converting input VCF to PLINK ped format... "
 
-	MY_VCF_BASENAME="$(basename $1)"
-	echo "$MY_VCF_BASENAME"
+	# Get VCF name characteristics and set basename:
+	MY_INPUT_VCF=$(basename -- "$1")
+	MY_INPUT_VCF_EXTENSION="${MY_INPUT_VCF##*.}"
+	MY_VCF_BASENAME="$(basename $1 ."$MY_INPUT_VCF_EXTENSION")"
+	echo "INFO      | $(date) |          Input VCF: ${MY_INPUT_VCF}"
+	echo "INFO      | $(date) |          Input VCF basename: ${MY_VCF_BASENAME}"
+	#echo "$MY_VCF_BASENAME"
 
+	# Do conversion:
 	vcftools --vcf $1 --plink --out "$MY_VCF_BASENAME"_plink
 
+echo "INFO      | $(date) |          Fixing PLINK .map file... "
+	# Fix plink .map file, which will have contig numbers for each SNP that will be mistaken 
+	# by plink in the next step as human chromosome numbers and throw the following error: 
+	#
+	# 	Error: Invalid chromosome code '27' on line 298 of .map file.
+	# 	(This is disallowed for humans.  Check if the problem is with your data, or if
+	# 	you forgot to define a different chromosome set with e.g. --chr-set.).
+	#
+	# We can fix this by changing the chromosome numbers (raw 1st col #s) to be contig 
+	# names/numbers, as follows:
+	if [[ -s "$MY_VCF_BASENAME"_plink.map ]] && [[ "$machine" = "Mac" ]]; then 
+		sed -i '' 's/^/Contig\_/g' "$MY_VCF_BASENAME"_plink.map ;
+	fi
+	if [[ -s "$MY_VCF_BASENAME"_plink.map ]] && [[ "$machine" = "Linux" ]]; then 
+		sed -i 's/^/Contig\_/g' "$MY_VCF_BASENAME"_plink.map ;
+	fi
+	
 
 ###### Make recode12 ped file with 1 individual per row, and '012'-coded SNP genotypes in 
 ## columns:
@@ -93,9 +129,13 @@ echo "INFO      | $(date) |          Converting input VCF to PLINK ped format...
 ## conversions to 012/minor012 files to work.
 echo "INFO      | $(date) |          Converting ped file to '012' genotype matrix... "
 
-	plink --file "$MY_VCF_BASENAME"_plink --recode12 --tab --out "$MY_VCF_BASENAME"_plink_recode12
+	# OLD CODE (now deprecated in part):
+	# plink --file "$MY_VCF_BASENAME"_plink --recode12 --tab --out "$MY_VCF_BASENAME"_plink_recode12
+	# NEW CODE:
+	plink --file "$MY_VCF_BASENAME"_plink --recode 12 --tab --out "$MY_VCF_BASENAME"_plink_recode12 --allow-extra-chr 0
 
-
+  
+  
 ###### Copy ped recode file to 'minor012.txt' file, and then recode the file according to 
 ## the minor allele counts:
 ## Key for genotype coding changes:
